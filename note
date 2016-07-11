@@ -1,0 +1,17 @@
+jsoncpp
+pthread
+ncurse可以使应用用程序直接控制终端屏幕显示示的库,本项目目中,该库为我们提供基本的窗又口口界面面。
+
+dirs: client comm conf data_pool lib log makefile 
+server 生产者消费者模型
+window 用户窗口
+
+
+netstat -nlp | grep 8080 chakan duankouhao 
+
+多线程模拟生产者，消费者模型
+线程实现：pthread_create,pthread_join
+信号量实现生产者，消费者：pv操作
+
+
+ps -aL|grep udp_server

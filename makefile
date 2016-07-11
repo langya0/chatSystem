@@ -2,6 +2,7 @@ ROOT_PATH=$(shell pwd)
 SERVER_PATH=$(ROOT_PATH)/server
 CLIENT_PATH=$(ROOT_PATH)/client
 COMM_PATH=$(ROOT_PATH)/comm
+
 DATA_PATH=$(ROOT_PATH)/data_pool
 
 SER=udp_server
@@ -29,30 +30,30 @@ all:$(SER) $(CLI)
 
 # $^代表整个依赖列表
 $(SER):$(SER_OBJ)
-	@$(CC) -o $@ $^ -lpthread
+	@$(CC) -o $@ $^ -lpthread -ljson -g
 	@echo "Linking [ $^ ] to [ $@ ] ... done"
 
 # $^代表整个依赖列表
 $(CLI):$(CLI_OBJ)
-	@$(CC) -o $@ $^
+	@$(CC) -o $@ $^ -ljson -g
 	@echo "Linking [ $^ ] to [ $@ ] ... done"
 
 # $<代表依次取得
 %.o:$(SERVER_PATH)/%.cpp
-	$(CC) -c $< $(FIND_INCLUDE)
+	@$(CC) -c $< $(FIND_INCLUDE) -ljson -g
 	@echo "Compiling [ $< ] to [ $@ ] ... done"
 
 # $<代表依次取得
 %.o:$(CLIENT_PATH)/%.cpp
-	$(CC) -c $< $(FIND_INCLUDE)
+	@$(CC) -c $< $(FIND_INCLUDE) -ljson -g
 	@echo "Compiling [ $< ] to [ $@ ] ... done"
 
 %.o:$(COMM_PATH)/%.cpp
-	$(CC) -c $< $(FIND_INCLUDE)
+	@$(CC) -c $< $(FIND_INCLUDE) -ljson -g
 	@echo "Compiling [ $< ] to [ $@ ] ... done"
 
-%.o:$(DATA_PATH)/%.cpp
-	$(CC) -c $< $(FIND_INCLUDE)
+%.o:$(DATA_PATH)/%.cpp 
+	@$(CC) -c $< $(FIND_INCLUDE) -ljson -g
 	@echo "Compiling [ $< ] to [ $@ ] ... done"
 
 .PHONY:debug
