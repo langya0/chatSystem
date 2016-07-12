@@ -1,15 +1,30 @@
 #include "udp_client.h"
 
+void udp_client::add_flist(string &user)
+{
+	std::vector<string>::iterator it=flist.begin();
+	// for()
+	while(*it != user)
+	{
+		*it++;
+	};
+	if(it==flist.end())
+	{
+		flist.push_back(user);		
+	}
+}
+
 udp_client::udp_client(const string & _ip, const int &_port)
 	:remote_ip(_ip)
 	,port(_port)
 	,sock(-1)
 {
-	cout << "udp_client create"<<endl;
+	__TRACE("udp_client create");
 }
 
 udp_client::~udp_client()
 {
+	__TRACE("");
 	if(sock != -1)
 	{
 		close(sock);
@@ -19,6 +34,7 @@ udp_client::~udp_client()
 
 void udp_client::init()
 {
+	__TRACE("");
 	sock = socket(AF_INET,SOCK_DGRAM,0);
 	if(sock==-1)
 	{
@@ -30,6 +46,7 @@ void udp_client::init()
 
 ssize_t udp_client::udp_recv(string &out)
 {
+	__TRACE("");
 	struct sockaddr_in remote;
 	socklen_t len = sizeof(remote);
 
@@ -47,6 +64,7 @@ ssize_t udp_client::udp_recv(string &out)
 
 ssize_t udp_client::udp_send(string &in)
 {
+	__TRACE("");
 	struct sockaddr_in remote;
 	remote.sin_family = AF_INET;
 	remote.sin_port = htons(port);

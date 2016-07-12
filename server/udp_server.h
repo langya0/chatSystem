@@ -31,7 +31,7 @@ public:
 	void broadcast();
 private:
 	void add_user(struct sockaddr_in &client);
-
+	void del_user(struct sockaddr_in &client);
 
 	data_pool pool;
 

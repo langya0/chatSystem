@@ -1,1 +1,3 @@
-#define __DEBUG
+// #define __DEBUG
+#include <stdio.h>
+#define fout stdout

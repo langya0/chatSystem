@@ -15,7 +15,7 @@ public:
 	///
 	void data_get(string&);
 
-	void data_put(string&);
+	void data_put(const string&);
 
 private:
 	sem_t blank_sem;

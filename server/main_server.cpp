@@ -13,7 +13,7 @@ void *recv_product(void* arg)
 	string msg;
 	while(!done)
 	{
-		__TRACE("............");
+		__TRACE("");
 		serp->udp_recv(msg);
 	}
 }
@@ -24,7 +24,8 @@ void *send_comsum(void* arg)
 	string msg;
 	while(!done)
 	{
-		__TRACE("............");
+		__TRACE("");
+
 		serp->broadcast();
 	}
 }
@@ -43,7 +44,7 @@ int main(int argc, char const *argv[])
 	string msg;
 	udp_server ser(ip,port);
 
-	__TRACE("ip%s:port%d",ip,port);
+	__TRACE("ip%s:port%d",ip.c_str(),port);
 
 	pthread_t th1,th2;
 

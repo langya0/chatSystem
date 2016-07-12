@@ -21,7 +21,7 @@ void data_pool::data_get(string &msg_out)
 	sem_wait(&blank_sem);//v
 }
 
-void data_pool::data_put(string &msg)
+void data_pool::data_put(const string &msg)
 {
 	sem_wait(&blank_sem);
 

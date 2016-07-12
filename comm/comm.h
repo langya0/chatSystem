@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "../conf/config.h"
 using namespace std;
 
 using namespace std;
@@ -8,11 +9,10 @@ using namespace std;
 #define _PORT_ 8080
 
 #ifdef __DEBUG
-#define __TRACE(...) fprintf(stdout, "file[%s]line[%d]func[%s]",__FILE__,__LINE__,__func__);\
-fprintf(stdout,__VA_ARGS__);
-fprintf(stdout, "\n");
+
+#define __TRACE(...) fprintf(fout,"file[%s] line[%u] func[%s]::   ",__FILE__,__LINE__,__func__);fprintf(fout,__VA_ARGS__);fprintf(fout, "\n")
 #else
-#define __TRACE(...) ;
+#define __TRACE(...);
 #endif
 
 

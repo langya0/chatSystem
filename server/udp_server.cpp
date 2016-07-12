@@ -12,7 +12,7 @@ void udp_server::init()
 {
 	sock = socket(AF_INET,SOCK_DGRAM,0);
 
-	__TRACE("sock = %d ",sock);
+	__TRACE("");
 
 	if(sock==-1)
 	{
@@ -33,6 +33,7 @@ void udp_server::init()
 }
 void udp_server::add_user(struct sockaddr_in &client)
 {
+	__TRACE("");
 	string _key_ip = inet_ntoa(client.sin_addr);////
 
 	cout << "new user :"<< _key_ip << endl;
@@ -41,7 +42,7 @@ void udp_server::add_user(struct sockaddr_in &client)
 }
 ssize_t udp_server::udp_recv(string &out)
 {
-	__TRACE("\n");
+	__TRACE("");
 	struct sockaddr_in client;
 	socklen_t len = sizeof(client);
 
@@ -49,10 +50,12 @@ ssize_t udp_server::udp_recv(string &out)
 	memset(buf,'\0',sizeof(buf));
 
 	ssize_t _ret = recvfrom(sock,buf,sizeof(buf)-1,0,(struct sockaddr*)&client,&len);
+	
 	if(_ret==-1)
 	{
+		cout << " ret = " << _ret<<endl;
 		/////////////////////////////////??????????????????????
-		cout << __func__ << __LINE__ <<endl;
+		cout << "here,but why" <<endl;
 		print_log(strerror(errno),__func__,__LINE__);
 		exit(1);
 	}
@@ -64,11 +67,11 @@ ssize_t udp_server::udp_recv(string &out)
 		add_user(client);
 	}
 	return _ret;
-
 }
 
 ssize_t udp_server::udp_send(string &in,const struct sockaddr_in &client,const socklen_t &len)
 {
+	__TRACE("");
 	ssize_t _ret = sendto(sock,in.c_str(),in.size(),0,(struct sockaddr*)&client,len);
 	if(_ret< 0)
 	{
@@ -80,10 +83,9 @@ ssize_t udp_server::udp_send(string &in,const struct sockaddr_in &client,const s
 
 void udp_server::broadcast()
 {
+	__TRACE("");
 	string msg;
 	pool.data_get(msg);
-
-	cout << __func__ << __LINE__ <<endl;
 
 	map<string,struct sockaddr_in>::iterator _iter = online_user.begin();
 	for(;_iter!=online_user.end();++_iter)
@@ -94,9 +96,10 @@ void udp_server::broadcast()
 
 udp_server::~udp_server()
 {
+
 	if(sock != -1)
 	{
 		close(sock);
 	}
-	cout << "udp_server destroy..."<<endl;
+	__TRACE("udp_server destroy...");
 }
