@@ -1,4 +1,5 @@
 #include "udp_server.h"
+#include <unistd.h>
 
 //.ser 127.0.0.1 8080
 void usage(const char * proc)
@@ -15,6 +16,7 @@ void *recv_product(void* arg)
 	{
 		__TRACE("");
 		serp->udp_recv(msg);
+		// cout << msg<<endl;
 	}
 }
 void *send_comsum(void* arg)
@@ -27,6 +29,7 @@ void *send_comsum(void* arg)
 		__TRACE("");
 
 		serp->broadcast();
+		// cout << msg<<endl;
 	}
 }
 
@@ -41,8 +44,12 @@ int main(int argc, char const *argv[])
 	string ip = argv[1];
 	int port = atoi(argv[2]);
 
+	// daemon(0,0);
+
 	string msg;
 	udp_server ser(ip,port);
+
+	ser.init();
 
 	__TRACE("ip%s:port%d",ip.c_str(),port);
 

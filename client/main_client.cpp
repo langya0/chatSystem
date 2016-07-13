@@ -1,18 +1,25 @@
+#include <strstream>
 #include "udp_client.h"
 #include "udp_data.h"
 #include "../window/chat_window.h"
 
 chat_window *win_p = NULL;
-///全局，便于4各线程共同访问
+//全局，便于4各线程共同访问
 string nick_name;
 string school;
+
 string cmd = "None";
 
 
 void *draw_header(void *arg)
 {
+	__TRACE("");
+
 	udp_client *cli_p = (udp_client*)arg;
 	win_p->create_header();
+
+	__TRACE("");
+
 	win_p->flush_window(win_p->header);
 
 	int max_y;
@@ -26,23 +33,28 @@ void *draw_header(void *arg)
 
 	while(1)
 	{
+		__TRACE("");
 		win_p->put_string(win_p->header,max_y/2,index++,head_line);		
+		__TRACE("");
 		if(index >=max_x*3/4)
 			index = 1;
 
-		win_p->flush_window(win_p->input);
+		win_p->flush_window(win_p->header);
 		usleep(500000);
 		win_p->clear_win_line(win_p->header,max_y/2,1);
 	}	
 }
 void *draw_output(void *arg)
 {
+	__TRACE("");
 	udp_client *cli_p = (udp_client*)arg;
 	win_p->create_output();
-	win_p->create_flist();
+	// win_p->create_flist();
 
 	win_p->flush_window(win_p->output);
-	win_p->flush_window(win_p->flist);
+	// win_p->flush_window(win_p->flist);
+
+	__TRACE("");
 
 	string recv_str;
 	udp_data data;
@@ -59,15 +71,15 @@ void *draw_output(void *arg)
 	getmaxyx(win_p->output,max_y,max_x);
 
 	int max_fy, max_fx;
-	getmaxyx(win_p->flist,max_fy,max_fx);
+	// getmaxyx(win_p->flist,max_fy,max_fx);
 
 
 	while(1)
 	{
+		__TRACE("");
 		cli_p->udp_recv(recv_str);
 
 		data.to_value(recv_str);
-
 		data.get_nick_name(nn);
 		data.get_school(sc);
 		data.get_cmd(cmd);
@@ -83,30 +95,73 @@ void *draw_output(void *arg)
 		win_str+="# ";
 		win_str+=msg;
 
-		cli_p->add_flist(flist_str);
+		// if(cmd != "Q")
+		// 	cli_p->add_flist(flist_str);
+		// else	
+		// 	cli_p->del_flist(flist_str);
 
-		win_p->put_string(win_p->output,index++,1,win_str);
+		win_p->put_string(win_p->output,index++,3,win_str);
 
 		if(index >= max_y-1)
 		{
 			win_p->flush_window(win_p->output);
 			sleep(1);
 			index = 1;///add other code
-			win_p->clear_win_line(win_p->output,1,max_y);
+
+			win_p->clear_win_line(win_p->output,1,max_y-1);
 		}
 
-		int i = 0;
-		for(;i < cli_p->flist.size();++i)
-		{
-			win_p->put_string(win_p->flist,i+1,1,cli_p->flist[i]);
+		/////////////添加分屏显示
+		// int fnums = cli_p->flist.size();
+		
 
-		}
+		int page = max_fy -3;
+
+		// int pages = (fnums+page-1)/page; //yeshu 
+// /////////////////////////////////////////////////////////////////
+		int num = 0;
+		// for(;num < pages;++num)
+		// {
+		// 	int i = 0;
+		// 	for(;i < page;++i)
+		// 	{
+		// 		int index = num*page+i;
+		// 		win_p->put_string(win_p->flist,i+1,1,cli_p->flist[index++]);
+		// 	}
+		// }
+
+		// int index = 0;
+		// for (;index <fnums;++index)
+		// {
+		// 	win_p->put_string(win_p->flist,(index%page+1),1,cli_p->flist[index%page]);
+		// 	string page_num ="";
+		// 	string pages_str="";
+
+		// 	strstream ss;
+		// 	strstream sss;
+		// 	ss<<index/page+1;
+		// 	ss>>page_num;
+
+		// 	sss<<pages;
+		// 	sss>>pages_str;
+
+		// 	page_num+="\\";
+		// 	page_num+=pages_str;
+
+		// 	if(index %page==0)
+		// 	{
+		// 		win_p->put_string(win_p->flist,max_fy-3,max_fx/2-1,page_num);
+		// 		sleep(1);
+		// 	}
+		// }
 		win_p->flush_window(win_p->output);
-		win_p->flush_window(win_p->flist);
+		// win_p->flush_window(win_p->flist);
 	}	
 }
 void *draw_flist(void *arg)
 {
+	__TRACE("");
+	
 	sleep(3);
 	udp_client *cli_p = (udp_client*)arg;
 	win_p->create_flist();
@@ -138,6 +193,10 @@ void *draw_input(void *arg)
 		win_p->get_str(win_p->input,win_str);
 		win_p->clear_win_line(win_p->input,1,1);
 
+		if(win_str == "quit"||win_str == "q")
+			cmd = "Q";
+		// sleep(3);
+
 		data.set_nick_name(nick_name);
 		data.set_school(school);
 		data.set_cmd(cmd);
@@ -153,8 +212,13 @@ void *draw_input(void *arg)
 	// cin>> school;
 
 		/////fasong
-		cli_p->udp_send(send_str);
 
+		// sleep(3);
+		cli_p->udp_send(send_str);
+		if(cmd == "Q")
+		{
+			_exit(0);
+		}
 		usleep(500000);
 	}	
 	return	NULL;
@@ -178,9 +242,6 @@ int main(int argc, const char * argv[])
 	string ip = argv[1];
 	int port = atoi(argv[2]);
 
-	string nick_name;
-	string school;
-	string cmd = "None";
 	cout << "Please Enter your nick_name# ";
 	fflush(stdout);
 	cin>> nick_name;
@@ -188,10 +249,6 @@ int main(int argc, const char * argv[])
 	fflush(stdout);
 	cin>> school;
 
-	// cout << "Please Enter your cmd# "
-	// fflush(stdout);
-	// cin>> cmd;
-	
 	udp_client _cli(ip,port);
 	_cli.init();
 

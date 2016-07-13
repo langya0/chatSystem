@@ -7,6 +7,19 @@ udp_server::udp_server(const string &ip, const int &port)
 {
 	__TRACE("udp_server creat...");
 }
+void udp_server::old_user_del(struct sockaddr_in& client,string &out)
+{
+	////////ruguo cmd = q 删除用户
+	udp_data data;
+	data.to_value(out);
+	string _cmd;
+	data.get_cmd(_cmd);
+	if(_cmd == "Q")
+	{
+		string _key_ip = inet_ntoa(client.sin_addr);
+		online_user.erase(_key_ip);
+	}
+}
 
 void udp_server::init()
 {
@@ -65,6 +78,7 @@ ssize_t udp_server::udp_recv(string &out)
 		pool.data_put(out);///put to pool
 			///baocun youhu xinxi 
 		add_user(client);
+		old_user_del(client,out);
 	}
 	return _ret;
 }

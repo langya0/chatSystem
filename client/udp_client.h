@@ -21,6 +21,7 @@ public:
 	ssize_t udp_recv(string &out);
 	ssize_t udp_send(string &in);
 	void add_flist(string &user);
+	void del_flist(string &old_user);
 
 	~udp_client();
 	void init();

@@ -79,5 +79,18 @@ debug:
 
 .PHONY:clean
 clean:
-	@rm -rf $(SER) $(CLI) *.o
+	@rm -rf $(SER) $(CLI) *.o output
 	@echo "clean ... done"
+.PHONY:output
+output:
+	@mkdir -p output/server
+	@mkdir -p output/client
+	@cp -rf log output/server
+	@cp -rf conf output/client
+	@cp -rf conf output/server
+
+	@cp -f $(SER) output/server
+	@cp -f $(CLI) output/client
+	@cp ser.sh output/server
+
+

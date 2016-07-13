@@ -20,7 +20,7 @@ void chat_window::clear_win_line(WINDOW*win,int begin_y,int nums)
 {
 	while(nums-->0)
 	{
-		wmove(win,begin_y,0);
+		wmove(win,begin_y+nums,1);
 		wclrtoeol(win);
 	}
 }
@@ -68,18 +68,17 @@ void chat_window::create_input()
 
 chat_window::chat_window()
 {
-	delwin(header);
-	delwin(flist);
-	delwin(input);
-	delwin(output);
 	initscr();
-
+	curs_set(0);
 }
 
 chat_window::~chat_window()
 {
-	
 	sem_init(&sock,0,1);
+	delwin(header);
+	delwin(flist);
+	delwin(input);
+	delwin(output);
 	endwin();
 }
 

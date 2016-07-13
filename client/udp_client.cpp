@@ -1,5 +1,20 @@
 #include "udp_client.h"
 
+void udp_client::del_flist(string &old_user)
+{
+	vector<string>::iterator it = flist.begin();
+	for(;it!=flist.end();++it)
+	{
+		if(*it==old_user)
+		{
+			it = flist.erase(it);
+			break;
+		}
+		else
+			++it;
+	}
+}	
+
 void udp_client::add_flist(string &user)
 {
 	std::vector<string>::iterator it=flist.begin();
