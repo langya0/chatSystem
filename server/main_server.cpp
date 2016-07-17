@@ -15,7 +15,7 @@ void *recv_product(void* arg)
 	while(!done)
 	{
 		__TRACE("");
-		serp->udp_recv(msg);
+		serp->udp_recv(msg); //接受
 		// cout << msg<<endl;
 	}
 }
@@ -28,7 +28,7 @@ void *send_comsum(void* arg)
 	{
 		__TRACE("");
 
-		serp->broadcast();
+		serp->broadcast(); //广播
 		// cout << msg<<endl;
 	}
 }
@@ -44,7 +44,7 @@ int main(int argc, char const *argv[])
 	string ip = argv[1];
 	int port = atoi(argv[2]);
 
-	// daemon(0,0);
+	daemon(0,0);
 
 	string msg;
 	udp_server ser(ip,port);

@@ -5,7 +5,7 @@ udp_server::udp_server(const string &ip, const int &port)
 	,port(port)
 	,sock(-1)
 {
-	__TRACE("udp_server creat...");
+	__TRACE("udp_server create...");
 }
 void udp_server::old_user_del(struct sockaddr_in& client,string &out)
 {
@@ -48,10 +48,7 @@ void udp_server::add_user(struct sockaddr_in &client)
 {
 	__TRACE("");
 	string _key_ip = inet_ntoa(client.sin_addr);////
-
-	cout << "new user :"<< _key_ip << endl;
-
-	online_user[_key_ip] = client;
+	online_user[_key_ip] = client; //添加用户到map
 }
 ssize_t udp_server::udp_recv(string &out)
 {
@@ -66,16 +63,13 @@ ssize_t udp_server::udp_recv(string &out)
 	
 	if(_ret==-1)
 	{
-		cout << " ret = " << _ret<<endl;
-		/////////////////////////////////??????????????????????
-		cout << "here,but why" <<endl;
 		print_log(strerror(errno),__func__,__LINE__);
 		exit(1);
 	}
 	else
 	{
 		out = buf;
-		pool.data_put(out);///put to pool
+		pool.data_put(out);///put to datapool
 			///baocun youhu xinxi 
 		add_user(client);
 		old_user_del(client,out);

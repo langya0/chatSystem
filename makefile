@@ -91,6 +91,6 @@ output:
 
 	@cp -f $(SER) output/server
 	@cp -f $(CLI) output/client
-	@cp ser.sh output/server
-
+	@cp plugin/ctl_server.sh output/server
+	@cp plugin/ctl_client.sh output/client
 

@@ -20,6 +20,7 @@ public:
 	udp_client(const string & _ip = _IP_, const int &_port = _PORT_);
 	ssize_t udp_recv(string &out);
 	ssize_t udp_send(string &in);
+	
 	void add_flist(string &user);
 	void del_flist(string &old_user);
 

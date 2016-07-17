@@ -34,14 +34,14 @@ private:
 	void add_user(struct sockaddr_in &client);
 	void old_user_del(struct sockaddr_in& client,string &out);
 
-	data_pool pool;
+	data_pool pool; //数据池
 
 private:
 	int sock;
 	string ip;
 	int  port;
 
-	map<string,struct sockaddr_in> online_user;
+	map<string,struct sockaddr_in> online_user; //在线用户
 
 
 };

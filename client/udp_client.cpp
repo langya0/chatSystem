@@ -18,14 +18,14 @@ void udp_client::del_flist(string &old_user)
 void udp_client::add_flist(string &user)
 {
 	std::vector<string>::iterator it=flist.begin();
-	// for()
-	while(*it != user)
+	for(;it!=flist.end();++it)
 	{
-		*it++;
-	};
+		if(*it==user)
+			break;
+	}
 	if(it==flist.end())
 	{
-		flist.push_back(user);		
+		flist.push_back(user);
 	}
 }
 

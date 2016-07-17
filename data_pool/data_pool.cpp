@@ -18,7 +18,7 @@ void data_pool::data_get(string &msg_out)
 	++index_com;
 	index_com%=cap;
 
-	sem_wait(&blank_sem);//v
+	sem_post(&blank_sem);//v
 }
 
 void data_pool::data_put(const string &msg)

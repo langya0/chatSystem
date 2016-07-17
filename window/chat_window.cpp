@@ -28,9 +28,10 @@ void chat_window::clear_win_line(WINDOW*win,int begin_y,int nums)
 ///////////////互斥锁保证刷新。
 void chat_window::flush_window(WINDOW *win)
 {
-	sem_init(&sock,0,1);
+	sem_wait(&sock);
 	box(win,0,0);//划线
 	wrefresh(win);//刷新出来
+	sem_post(&sock);
 }
 
 void chat_window::create_header()
@@ -68,13 +69,13 @@ void chat_window::create_input()
 
 chat_window::chat_window()
 {
+	sem_init(&sock,0,1);
 	initscr();
 	curs_set(0);
 }
 
 chat_window::~chat_window()
 {
-	sem_init(&sock,0,1);
 	delwin(header);
 	delwin(flist);
 	delwin(input);
