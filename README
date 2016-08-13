@@ -1,0 +1,41 @@
+.
+├── client
+│   ├── main_client.cpp
+│   ├── udp_client.cpp
+│   └── udp_client.h		//客户端主要接口，收发数据，维护在线好友列表
+│ 	ssize_t udp_recv(string &out);
+│ 	ssize_t udp_send(string &in);
+│ 	void add_flist(string &user);
+│ 	void del_flist(string &old_user);
+├── comm
+│   ├── comm.cpp
+│   ├── comm.h				//trace跟踪以及log生成接口
+│   ├── my_json.cpp
+│   ├── my_json.h			//由cppjson提供序列化/反序列化工具
+│   ├── udp_data.cpp	
+│   └── udp_data.h			//服务端数据格式定义，数据类型，数据项
+├── conf
+│   ├── conf 				//配置文件，保存ip port
+│   └── config.h
+├── data_pool
+│   ├── data_pool.cpp
+│   └── data_pool.h			//服务器底层数据管理，vetor容器，生产者消费者模式提供数据处理
+├── log						//日志文件
+├── makefile 				//工程建立make
+├── plugin 		
+│   ├── ctl_client.sh		//插件，服务器，客户端启动脚本
+│   └── ctl_server.sh
+├── README
+├── server
+│   ├── main_server.cpp
+│   ├── udp_server.cpp
+│   └── udp_server.h 		//服务器主接口，收发数据以及广播
+│ 	ssize_t udp_recv(string &);
+│ 	ssize_t udp_send(string &in,const struct sockaddr_in &,const socklen_t);
+│ 	void broadcast();
+└── window
+    ├── chat_window.cpp
+    ├── chat_window.h 		//窗口绘制模块，使用ncurse实现
+    └── makefile
+
+7 directories, 24 files
